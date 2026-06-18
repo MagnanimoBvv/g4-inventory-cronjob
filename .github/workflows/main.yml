@@ -1,0 +1,29 @@
+name: Update Products Cronjob
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update_products:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        store: [GI, HHG]
+
+    env:
+      GRAPHQL_URL: ${{ secrets[ format('GRAPHQL_URL_{0}', matrix.store) ] }}
+      SHOPIFY_TOKEN: ${{ secrets[ format('SHOPIFY_TOKEN_{0}', matrix.store) ] }}
+      G4_USER: ${{ secrets.G4_USER }}
+      G4_KEY: ${{ secrets.G4_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: npm install
+
+      - name: Run update for ${{ matrix.store }}
+        run: node index.js
