@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const xml2js = require('xml2js');
-const { getLocationId, getPublications, getProductByHandle, updateInventory } = require('./shopifyFunctions');
+const { getLocationId, getProductByHandle, updateInventory } = require('./shopifyFunctions');
 
 async function getG4Products() {
     const soapBody = `<?xml version="1.0" encoding="ISO-8859-1"?>
@@ -109,7 +109,6 @@ async function updateProducts() {
     if (response.status !== '1') return;
 
     const locationId = await getLocationId();
-    const productPublications = await getPublications();
     const uniqueModels = [...new Set(response.producto.map(p => p.model))];
     for (const model of uniqueModels) {
         // if (model !== '4f0-tra') continue; // If para pruebas con un producto específico

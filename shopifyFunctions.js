@@ -25,33 +25,6 @@ async function getLocationId() {
     return response.data.data.locations.nodes[0].id;
 }
 
-async function getPublications() {
-    const response = await axios.post(
-        process.env.GRAPHQL_URL,
-        JSON.stringify({
-            query: `
-                query {
-                    publications(first: 10) {
-                        nodes {
-                            id
-                            name
-                        }
-                    }
-                }
-            `,
-        }), {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Shopify-Access-Token': process.env.SHOPIFY_TOKEN,
-            }
-        }
-    );
-
-    return response.data.data.publications.nodes.map(channel => ({
-        publicationId: channel.id,
-    }));
-}
-
 async function getProductByHandle(handle) {
     const response = await axios.post(
         process.env.GRAPHQL_URL,
@@ -120,4 +93,4 @@ async function updateInventory(input) {
     return response.data.data.inventorySetQuantities.inventoryAdjustmentGroup;
 }
 
-module.exports = { getLocationId, getPublications, getProductByHandle, updateInventory };
+module.exports = { getLocationId, getProductByHandle, updateInventory };
