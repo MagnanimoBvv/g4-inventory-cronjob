@@ -9,21 +9,19 @@ jobs:
   update_products:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        store: [GI, HHG]
-
     env:
-      GRAPHQL_URL: ${{ secrets[ format('GRAPHQL_URL_{0}', matrix.store) ] }}
-      SHOPIFY_TOKEN: ${{ secrets[ format('SHOPIFY_TOKEN_{0}', matrix.store) ] }}
+      STORES: GI,HHG
+      GRAPHQL_URL_GI: ${{ secrets.GRAPHQL_URL_GI }}
+      SHOPIFY_TOKEN_GI: ${{ secrets.SHOPIFY_TOKEN_GI }}
+      GRAPHQL_URL_HHG: ${{ secrets.GRAPHQL_URL_HHG }}
+      SHOPIFY_TOKEN_HHG: ${{ secrets.SHOPIFY_TOKEN_HHG }}
       G4_USER: ${{ secrets.G4_USER }}
       G4_KEY: ${{ secrets.G4_KEY }}
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: "20" }
+        with: { node-version: "24" }
       - run: npm install
-
-      - name: Run update for ${{ matrix.store }}
+      - name: Run update
         run: node index.js
