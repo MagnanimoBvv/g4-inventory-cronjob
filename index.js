@@ -115,10 +115,10 @@ function getActiveVariants(variants) {
 async function updateProducts(store, products, inventory) {
     const locationId = await getLocationId(store);
     const shopifyProducts = await paginateProductsByVendor(store, 'G4');
-    const uniqueModels = [...new Set(products.producto.map(p => p.model))];
+    const uniqueModels = [...new Set(products.map(p => p.model))];
     for (const model of uniqueModels) {
         // if (model !== '4f0-tra') continue; // If para pruebas con un producto específico
-        const variants = products.producto.filter(p => p.model === model);
+        const variants = products.filter(p => p.model === model);
         const activeVariants = getActiveVariants(variants);
         if (activeVariants.length === 0) continue;
         const product = activeVariants[0];
@@ -160,12 +160,12 @@ async function updateProducts(store, products, inventory) {
 
 async function main() {
     const products = await getG4Products();
-    const inventory = await getG4Inventory();
     if (products.status !== '1') return;
+    const inventory = await getG4Inventory();
 
     const stores = getStores();
     for (const store of stores) {
-        await updateProducts(store, products, inventory);
+        await updateProducts(store, products.producto, inventory);
     }
 }
 
