@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      STORES: GI,HHG
+      STORES: GI
       GRAPHQL_URL_GI: ${{ secrets.GRAPHQL_URL_GI }}
       SHOPIFY_TOKEN_GI: ${{ secrets.SHOPIFY_TOKEN_GI }}
       GRAPHQL_URL_HHG: ${{ secrets.GRAPHQL_URL_HHG }}
